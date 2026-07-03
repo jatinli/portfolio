@@ -1,0 +1,214 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg: #050506;
+  --color-surface: #0a0a0d;
+  --color-elevated: #0f0f13;
+  --color-fg: #f4f4f1;
+  --color-muted: #86868f;
+  --color-faint: #4e4e57;
+  --color-line: #17171c;
+
+  /* Accent is DYNAMIC — hue is driven by scroll position (AccentField).
+     Every `-accent` utility across the site inherits this automatically. */
+  --color-accent: hsl(var(--accent-h, 224) var(--accent-s, 85%) var(--accent-l, 67%));
+  --color-accent-soft: hsl(var(--accent-h, 224) 70% 62% / 0.16);
+  --color-accent-dim: hsl(var(--accent-h, 224) 45% 40%);
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out-quart: cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+@theme inline {
+  --font-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, "SF Mono", monospace;
+}
+
+:root {
+  color-scheme: dark;
+  /* default hue — overwritten continuously by AccentField */
+  --accent-h: 224;
+  --accent-s: 85%;
+  --accent-l: 67%;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-fg);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: clip;
+  letter-spacing: -0.011em;
+}
+
+::selection {
+  background: var(--color-accent);
+  color: #05060a;
+}
+
+::-webkit-scrollbar {
+  width: 9px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-bg);
+}
+::-webkit-scrollbar-thumb {
+  background: #23232b;
+  border-radius: 8px;
+  border: 2px solid var(--color-bg);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #30303a;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+@media (pointer: fine) {
+  body[data-custom-cursor="true"] {
+    cursor: none;
+  }
+  body[data-custom-cursor="true"] a,
+  body[data-custom-cursor="true"] button {
+    cursor: none;
+  }
+}
+
+/* ---------- utilities ---------- */
+
+.noise-overlay {
+  position: fixed;
+  inset: -50%;
+  width: 200%;
+  height: 200%;
+  pointer-events: none;
+  z-index: 100;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation: grain 9s steps(6) infinite;
+}
+
+@keyframes grain {
+  0%, 100% { transform: translate(0, 0); }
+  16% { transform: translate(-3%, 2%); }
+  33% { transform: translate(2%, -3%); }
+  50% { transform: translate(-2%, -2%); }
+  66% { transform: translate(3%, 1%); }
+  83% { transform: translate(-1%, 3%); }
+}
+
+.glass {
+  background: rgba(10, 10, 13, 0.6);
+  backdrop-filter: blur(20px) saturate(1.4);
+  -webkit-backdrop-filter: blur(20px) saturate(1.4);
+  border: 1px solid rgba(244, 244, 241, 0.07);
+}
+
+.text-gradient-fade {
+  background: linear-gradient(180deg, var(--color-fg) 32%, rgba(244, 244, 241, 0.22));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Emphasis word — accent-colored, NOT serif. Restraint is the flex. */
+.accent-word {
+  color: var(--color-accent);
+  transition: color 0.6s var(--ease-out-expo);
+}
+
+/* legacy alias so section markup keeps working — now an accent emphasis, no serif */
+.serif-accent {
+  color: var(--color-accent);
+  font-style: normal;
+  font-family: inherit;
+  font-weight: 500;
+  transition: color 0.6s var(--ease-out-expo);
+}
+
+.mono-label {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  font-weight: 400;
+}
+
+.coord {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.04em;
+}
+
+.link-line {
+  position: relative;
+}
+.link-line::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.5s var(--ease-out-expo);
+}
+.link-line:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.animate-marquee {
+  animation: marquee 30s linear infinite;
+}
+
+@keyframes pulse-soft {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+.animate-pulse-soft {
+  animation: pulse-soft 2.4s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .noise-overlay,
+  .animate-marquee,
+  .animate-pulse-soft {
+    animation: none !important;
+  }
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+  }
+}
