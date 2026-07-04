@@ -5,17 +5,14 @@ import {
   motion,
   useMotionValue,
   useSpring,
-  useTransform,
   AnimatePresence,
   useReducedMotion,
 } from "framer-motion";
 
 /**
- * Latent-probe cursor.
- * - a precise reticle that reads out its normalized position in the
- *   viewport, like probing a coordinate in embedding space
+ * Playful ink cursor.
+ * - a dot + trailing ring
  * - morphs into a labeled pill over [data-cursor] / links / buttons
- * - inherits the live accent hue
  * - disabled on touch + reduced-motion
  */
 export default function Cursor() {
@@ -25,14 +22,11 @@ export default function Cursor() {
   const [hovering, setHovering] = useState(false);
   const [pressed, setPressed] = useState(false);
   const [visible, setVisible] = useState(false);
-  const [coord, setCoord] = useState({ x: "0.00", y: "0.00" });
 
   const x = useMotionValue(-100);
   const y = useMotionValue(-100);
   const ringX = useSpring(x, { stiffness: 380, damping: 34, mass: 0.55 });
   const ringY = useSpring(y, { stiffness: 380, damping: 34, mass: 0.55 });
-  const labelX = useTransform(ringX, (v) => v + 22);
-  const labelY = useTransform(ringY, (v) => v + 22);
 
   useEffect(() => {
     if (reduced) return;
@@ -40,24 +34,10 @@ export default function Cursor() {
     setEnabled(true);
     document.body.dataset.customCursor = "true";
 
-    let rafPending = false;
     const onMove = (e: MouseEvent) => {
       x.set(e.clientX);
       y.set(e.clientY);
       setVisible(true);
-
-      if (!rafPending) {
-        rafPending = true;
-        requestAnimationFrame(() => {
-          rafPending = false;
-          const nx = (e.clientX / window.innerWidth) * 2 - 1;
-          const ny = -((e.clientY / window.innerHeight) * 2 - 1);
-          setCoord({
-            x: (nx >= 0 ? "+" : "") + nx.toFixed(2),
-            y: (ny >= 0 ? "+" : "") + ny.toFixed(2),
-          });
-        });
-      }
 
       const el = (e.target as HTMLElement).closest<HTMLElement>(
         "[data-cursor], a, button, [role='button']"
@@ -109,13 +89,6 @@ export default function Cursor() {
         transition={{ type: "spring", stiffness: 300, damping: 25 }}
         initial={false}
       >
-        {/* crosshair ticks when idle */}
-        {!label && (
-          <>
-            <span className="absolute w-full h-px bg-accent/30" />
-            <span className="absolute h-full w-px bg-accent/30" />
-          </>
-        )}
         <AnimatePresence>
           {label && (
             <motion.span
@@ -123,7 +96,7 @@ export default function Cursor() {
               initial={{ opacity: 0, scale: 0.6 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.6 }}
-              className="font-mono text-[10px] tracking-[0.16em] uppercase text-black whitespace-nowrap px-2"
+              className="font-mono text-[10px] tracking-[0.16em] uppercase text-white whitespace-nowrap px-2"
             >
               {label}
             </motion.span>
@@ -131,15 +104,13 @@ export default function Cursor() {
         </AnimatePresence>
       </motion.div>
 
-      {/* coordinate readout trailing the probe */}
+      {/* instant dot */}
       <motion.div
-        className="absolute coord text-[10px] text-accent/70 whitespace-nowrap"
-        style={{ x: labelX, y: labelY }}
-        animate={{ opacity: visible && !label ? 1 : 0 }}
-        transition={{ duration: 0.2 }}
-      >
-        [{coord.x}, {coord.y}]
-      </motion.div>
+        className="absolute w-2 h-2 rounded-full bg-fg"
+        style={{ x, y, translateX: "-50%", translateY: "-50%" }}
+        animate={{ opacity: visible && !label ? 1 : 0, scale: hovering ? 0.5 : 1 }}
+        transition={{ duration: 0.15 }}
+      />
     </div>
   );
 }

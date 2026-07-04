@@ -29,12 +29,12 @@ export default function FaviconProgress() {
 
       ctx.clearRect(0, 0, 64, 64);
       // base dot
-      ctx.fillStyle = "#f2f2ef";
+      ctx.fillStyle = "#17150f";
       ctx.beginPath();
       ctx.arc(32, 32, 12, 0, Math.PI * 2);
       ctx.fill();
       // progress ring
-      ctx.strokeStyle = "#4d7cfe";
+      ctx.strokeStyle = "#1f4dff";
       ctx.lineWidth = 7;
       ctx.lineCap = "round";
       ctx.beginPath();

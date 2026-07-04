@@ -1,36 +1,32 @@
 @import "tailwindcss";
 
 @theme {
-  --color-bg: #050506;
-  --color-surface: #0a0a0d;
-  --color-elevated: #0f0f13;
-  --color-fg: #f4f4f1;
-  --color-muted: #86868f;
-  --color-faint: #4e4e57;
-  --color-line: #17171c;
+  /* paper + ink — warm, loud, not another dark dev site */
+  --color-bg: #f4f0e6;
+  --color-surface: #ece7d9;
+  --color-elevated: #ffffff;
+  --color-fg: #17150f;
+  --color-muted: #6b675c;
+  --color-faint: #a29d8f;
+  --color-line: #d9d3c3;
 
-  /* Accent is DYNAMIC — hue is driven by scroll position (AccentField).
-     Every `-accent` utility across the site inherits this automatically. */
-  --color-accent: hsl(var(--accent-h, 224) var(--accent-s, 85%) var(--accent-l, 67%));
-  --color-accent-soft: hsl(var(--accent-h, 224) 70% 62% / 0.16);
-  --color-accent-dim: hsl(var(--accent-h, 224) 45% 40%);
+  --color-accent: #1f4dff; /* electric blue — signature */
+  --color-pop: #7c5cff; /* grape — atmosphere only (gradient blobs) */
+  --color-orange: #ff5a1f; /* tangerine — warm spark */
+  --color-accent-soft: #1f4dff1f;
 
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-in-out-quart: cubic-bezier(0.76, 0, 0.24, 1);
 }
 
 @theme inline {
-  --font-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: var(--font-geist-mono), ui-monospace, "SF Mono", monospace;
+  --font-sans: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-chunk), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-plex), ui-monospace, "SF Mono", monospace;
 }
 
 :root {
-  color-scheme: dark;
-  /* default hue — overwritten continuously by AccentField */
-  --accent-h: 224;
-  --accent-s: 85%;
-  --accent-l: 67%;
+  color-scheme: light;
 }
 
 html {
@@ -55,31 +51,30 @@ body {
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   overflow-x: clip;
-  letter-spacing: -0.011em;
 }
 
 ::selection {
-  background: var(--color-accent);
-  color: #05060a;
+  background: var(--color-orange);
+  color: var(--color-fg);
 }
 
 ::-webkit-scrollbar {
-  width: 9px;
+  width: 10px;
 }
 ::-webkit-scrollbar-track {
   background: var(--color-bg);
 }
 ::-webkit-scrollbar-thumb {
-  background: #23232b;
+  background: #c9c2af;
   border-radius: 8px;
   border: 2px solid var(--color-bg);
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #30303a;
+  background: var(--color-fg);
 }
 
 :focus-visible {
-  outline: 2px solid var(--color-accent);
+  outline: 3px solid var(--color-accent);
   outline-offset: 3px;
   border-radius: 2px;
 }
@@ -96,6 +91,7 @@ body {
 
 /* ---------- utilities ---------- */
 
+/* paper grain */
 .noise-overlay {
   position: fixed;
   inset: -50%;
@@ -103,7 +99,7 @@ body {
   height: 200%;
   pointer-events: none;
   z-index: 100;
-  opacity: 0.03;
+  opacity: 0.05;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   animation: grain 9s steps(6) infinite;
 }
@@ -118,41 +114,84 @@ body {
 }
 
 .glass {
-  background: rgba(10, 10, 13, 0.6);
-  backdrop-filter: blur(20px) saturate(1.4);
-  -webkit-backdrop-filter: blur(20px) saturate(1.4);
-  border: 1px solid rgba(244, 244, 241, 0.07);
+  background: rgba(244, 240, 230, 0.82);
+  backdrop-filter: blur(14px) saturate(1.2);
+  -webkit-backdrop-filter: blur(14px) saturate(1.2);
+  border: 2px solid var(--color-fg);
+}
+
+/* chunky neo-brutalist shadow */
+.shadow-hard {
+  box-shadow: 4px 4px 0 var(--color-fg);
+}
+.shadow-hard-sm {
+  box-shadow: 3px 3px 0 var(--color-fg);
+}
+.btn-hard {
+  border: 2px solid var(--color-fg);
+  box-shadow: 4px 4px 0 var(--color-fg);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.btn-hard:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 var(--color-fg);
+}
+.btn-hard:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 var(--color-fg);
+}
+
+/* rotated sticker chips */
+.sticker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  border: 2px solid var(--color-fg);
+  border-radius: 999px;
+  padding: 0.45rem 0.9rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  background: var(--color-elevated);
+  box-shadow: 3px 3px 0 var(--color-fg);
+  transition: transform 0.2s var(--ease-out-expo);
+}
+.sticker:hover {
+  transform: rotate(0deg) scale(1.06) !important;
+}
+
+/* hand-drawn squiggle underline */
+.scribble {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 12' preserveAspectRatio='none'%3E%3Cpath d='M2 8 Q 15 2, 30 7 T 60 6 T 90 8 T 118 5' fill='none' stroke='%231f4dff' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 100% 0.28em;
+  padding-bottom: 0.14em;
 }
 
 .text-gradient-fade {
-  background: linear-gradient(180deg, var(--color-fg) 32%, rgba(244, 244, 241, 0.22));
+  background: linear-gradient(180deg, var(--color-fg) 40%, rgba(23, 21, 15, 0.35));
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
 
-/* Emphasis word — accent-colored, NOT serif. Restraint is the flex. */
-.accent-word {
-  color: var(--color-accent);
-  transition: color 0.6s var(--ease-out-expo);
-}
-
-/* legacy alias so section markup keeps working — now an accent emphasis, no serif */
+/* legacy aliases — accent emphasis words */
+.accent-word,
 .serif-accent {
   color: var(--color-accent);
   font-style: normal;
   font-family: inherit;
-  font-weight: 500;
-  transition: color 0.6s var(--ease-out-expo);
+  font-weight: 600;
 }
 
 .mono-label {
   font-family: var(--font-mono);
   font-size: 0.6875rem;
-  letter-spacing: 0.24em;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--color-muted);
-  font-weight: 400;
+  font-weight: 500;
 }
 
 .coord {
@@ -170,11 +209,11 @@ body {
   left: 0;
   bottom: -2px;
   width: 100%;
-  height: 1px;
+  height: 2px;
   background: currentColor;
   transform: scaleX(0);
   transform-origin: right;
-  transition: transform 0.5s var(--ease-out-expo);
+  transition: transform 0.4s var(--ease-out-expo);
 }
 .link-line:hover::after {
   transform: scaleX(1);
@@ -186,7 +225,7 @@ body {
   to { transform: translateX(-50%); }
 }
 .animate-marquee {
-  animation: marquee 30s linear infinite;
+  animation: marquee 24s linear infinite;
 }
 
 @keyframes pulse-soft {
@@ -197,13 +236,23 @@ body {
   animation: pulse-soft 2.4s ease-in-out infinite;
 }
 
+/* little wiggle for toolkit pills */
+@keyframes wiggle {
+  0%, 100% { transform: rotate(-2deg); }
+  50% { transform: rotate(2.5deg); }
+}
+.hover-wiggle:hover {
+  animation: wiggle 0.35s ease-in-out;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
   }
   .noise-overlay,
   .animate-marquee,
-  .animate-pulse-soft {
+  .animate-pulse-soft,
+  .hover-wiggle:hover {
     animation: none !important;
   }
   *,

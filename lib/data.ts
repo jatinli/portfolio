@@ -13,47 +13,24 @@ export const site = {
   name: "Jatin Lilani",
   firstName: "Jatin",
   lastName: "Lilani",
-  roles: ["AI Engineer", "Machine Learning", "Data Science", "Research"],
-  tagline: "Building intelligent systems with an obsession for craft.",
+  roles: ["ships on fridays", "sleeps on the weekend", "freelances in the mean time"],
+  tagline: "i make data spill their secrets.",
   email: "jatinlilani2@gmail.com",
   location: "India",
   timezone: "Asia/Kolkata",
   links: {
     github: "https://github.com/jatinli",
-    linkedin: "https://www.linkedin.com/in/jatinlilani",
+    linkedin: "https://www.linkedin.com/in/jatin-lilani-407416331",
     resume: `${BASE}/resume.pdf`,
   },
   metaDescription:
-    "Jatin Lilani — AI/ML Engineer, Data Scientist and Researcher. Designing and shipping intelligent systems, from research prototypes to production-grade ML.",
+    "Jatin Lilani — AI/ML engineer, data scientist and researcher. I build machine learning that actually ships: RAG systems, computer vision, forecasting, and the occasional over-engineered side quest.",
+  stickers: ["open to work", "ml + design", "data analyst"],
 };
 
 export const manifesto = {
   statement:
-    "I work at the intersection of research and product — where a model is only as good as the experience built around it.",
-  paragraphs: [
-    "Most engineers pick a lane: papers or products, notebooks or interfaces. I never could. The systems I love building are the ones where a well-posed research question ends up in a user's hands.",
-    "That means training models and questioning their failure modes. Shipping pipelines and obsessing over the last 40 milliseconds. Reading papers on Sunday and design systems on Monday.",
-  ],
-  facts: [
-    { label: "Focus", value: "Applied ML & Research" },
-    { label: "Approach", value: "First principles" },
-    { label: "Currently", value: "Open to opportunities" },
-    { label: "Based in", value: "India" },
-  ],
-  principles: [
-    {
-      title: "Rigor before scale",
-      body: "A model that isn't understood is a liability. I validate assumptions with ablations and error analysis before reaching for more compute.",
-    },
-    {
-      title: "Systems over scripts",
-      body: "Notebooks prove ideas; systems deliver them. I design ML the way good software is designed — testable, observable, reproducible.",
-    },
-    {
-      title: "Taste is a feature",
-      body: "The interface is part of the model. How intelligence is presented decides whether anyone trusts it enough to use it.",
-    },
-  ],
+    "most people pick a lane — papers or products, notebooks or interfaces. i never could, and honestly? that's the whole point.",
 };
 
 export type SkillNode = {
@@ -385,7 +362,6 @@ export type LatentCluster = {
 export const latentClusters: LatentCluster[] = [
   { id: "about", label: "About", href: "#about", x: 0.6, y: 0.2, mx: 0.22, my: 0.22, hue: 268, meta: "identity" },
   { id: "skills", label: "Capabilities", href: "#skills", x: 0.86, y: 0.44, mx: 0.22, my: 0.7, hue: 190, meta: "n·8 nodes" },
-  { id: "experience", label: "Experience", href: "#experience", x: 0.76, y: 0.32, mx: 0.68, my: 0.5, hue: 152, meta: "trajectory" },
   { id: "work", label: "Work", href: "#work", x: 0.9, y: 0.74, mx: 0.5, my: 0.82, hue: 32, meta: "4 studies" },
   { id: "research", label: "Research", href: "#research", x: 0.55, y: 0.4, mx: 0.52, my: 0.44, hue: 306, meta: "open problems" },
   { id: "contact", label: "Contact", href: "#contact", x: 0.82, y: 0.16, mx: 0.7, my: 0.18, hue: 224, meta: "reach out" },

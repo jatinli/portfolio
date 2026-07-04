@@ -1,23 +1,29 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Bricolage_Grotesque, Instrument_Sans, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 import { site } from "@/lib/data";
 import SmoothScroll from "@/components/providers/SmoothScroll";
-import AccentField from "@/components/providers/AccentField";
 import Cursor from "@/components/Cursor";
 import Preloader from "@/components/Preloader";
 import Nav from "@/components/Nav";
 import FaviconProgress from "@/components/FaviconProgress";
 
-const geist = Geist({
+const chunk = Bricolage_Grotesque({
   subsets: ["latin"],
-  variable: "--font-geist",
+  variable: "--font-chunk",
   display: "swap",
 });
 
-const geistMono = Geist_Mono({
+const body = Instrument_Sans({
   subsets: ["latin"],
-  variable: "--font-geist-mono",
+  variable: "--font-body",
+  display: "swap",
+});
+
+const plex = IBM_Plex_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  variable: "--font-plex",
   display: "swap",
 });
 
@@ -48,7 +54,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#060608",
+  themeColor: "#f4f0e6",
   width: "device-width",
   initialScale: 1,
 };
@@ -67,7 +73,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${geist.variable} ${geistMono.variable}`}>
+    <html lang="en" className={`${chunk.variable} ${body.variable} ${plex.variable}`}>
       <body>
         <script
           type="application/ld+json"
@@ -80,18 +86,16 @@ export default function RootLayout({
           Skip to content
         </a>
 
-        <AccentField>
-          <Preloader />
-          <Cursor />
-          <FaviconProgress />
-          <Nav />
+        <Preloader />
+        <Cursor />
+        <FaviconProgress />
+        <Nav />
 
-          <SmoothScroll>
-            <main id="main">{children}</main>
-          </SmoothScroll>
+        <SmoothScroll>
+          <main id="main">{children}</main>
+        </SmoothScroll>
 
-          <div className="noise-overlay" aria-hidden />
-        </AccentField>
+        <div className="noise-overlay" aria-hidden />
       </body>
     </html>
   );
